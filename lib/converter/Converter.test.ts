@@ -9,6 +9,43 @@ import Converter from './Converter';
 const { window } = new JSDOM();
 
 describe('Converter', () => {
+  describe('should convert', () => {
+    test('using the instance method', () => {
+      const converter = new Converter('# Hello, World! \n<a href="/" target="_blank" onmouseover="alert(\'XSS Attack!\')">It works!</a>', {
+        domPurify: DOMPurify(window),
+      });
+
+      const actual = converter.toHTML({
+        ADD_ATTR: [
+          'target',
+        ],
+      });
+
+      const expected = `<h1>Hello, World!</h1>
+<p><a target="_blank" href="/">It works!</a></p>
+`;
+
+      expect(actual).toStrictEqual(expected);
+    });
+
+    test('using the static method', () => {
+      const actual = Converter.toHTML('# Hello, World! \n<a href="/" target="_blank" onmouseover="alert(\'XSS Attack!\')">It works!</a>', {
+        domPurify: DOMPurify(window),
+        domPurifyConfig: {
+          ADD_ATTR: [
+            'target',
+          ],
+        },
+      });
+
+      const expected = `<h1>Hello, World!</h1>
+<p><a target="_blank" href="/">It works!</a></p>
+`;
+
+      expect(actual).toStrictEqual(expected);
+    });
+  });
+
   test('should convert correctly', () => {
     const data = `# Heading 1
 

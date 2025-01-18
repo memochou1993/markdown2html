@@ -18,30 +18,30 @@ class Converter {
   constructor(data: string, options: ConverterOptions = {}) {
     this.data = data;
     this.marked = options.marked ?? new Marked();
-    this.setMarkedExtensions(options.markedExtensions ?? []);
+    this.setMarkedExtensions(options.markedExtensions);
     this.domPurify = options.domPurify ?? createDOMPurify();
-    this.setDOMPurifyConfig(options.domPurifyConfig ?? {});
+    this.setDOMPurifyConfig(options.domPurifyConfig);
   }
 
-  public setMarkedExtensions(extensions: MarkedExtension[]): this {
-    this.marked.use(...extensions);
+  public setMarkedExtensions(extensions?: MarkedExtension[]): this {
+    if (extensions) this.marked.use(...extensions);
     return this;
   }
 
-  public setDOMPurifyConfig(config: DOMPurifyConfig): this {
-    this.domPurify.setConfig(config);
+  public setDOMPurifyConfig(config?: DOMPurifyConfig): this {
+    if (config) this.domPurify.setConfig(config);
     return this;
   }
 
   /**
-   * Converts the provided data into HTML format.
+   * Converts the provided data into HTML code.
    */
   public static toHTML(data: string, options: ConverterOptions = {}): string {
     return new Converter(data, options).toHTML();
   }
 
   /**
-   * Converts the provided data into HTML format.
+   * Converts the provided data into HTML code.
    */
   public toHTML(domPurifyConfig: DOMPurifyConfig = {}): string {
     const html = this.marked
