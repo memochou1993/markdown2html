@@ -9,9 +9,17 @@
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
+    <script src="https://unpkg.com/marked/marked.min.js"></script>
+    <script src="https://unpkg.com/dompurify/dist/purify.min.js"></script>
     <script src="dist/index.umd.js"></script>
     <script>
-      const output = window.Markdown2HTML.Converter.toHTML('# Hello, world!');
+      const output = window.Markdown2HTML.Converter.toHTML('# Hello, World! \n<a href="/" target="_blank" onmouseover="alert(\'XSS Attack!\')">It works!</a>', {
+        domPurifyConfig: {
+          ADD_ATTR: [
+            'target',
+          ],
+        },
+      });
 
       console.log(output);
     </script>

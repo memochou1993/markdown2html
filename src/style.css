@@ -22,7 +22,7 @@ body {
   min-height: 100vh;
 }
 
-h1 {
+h1, a {
   font-size: 3.2em;
 }
 

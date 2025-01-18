@@ -27,7 +27,7 @@ export default defineConfig({
       ],
       output: {
         globals: {
-          dompurify: 'dompurify',
+          dompurify: 'DOMPurify',
           marked: 'marked',
         },
       },

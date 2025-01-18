@@ -18,7 +18,9 @@ Hello, World!
 `;
 
     const converter = new Converter(data, {
-      markedExtensions: [
+      domPurify: DOMPurify(window),
+    })
+      .setMarkedExtensions([
         {
           renderer: {
             link({ href, text }: { href: string; text: string }) {
@@ -26,12 +28,10 @@ Hello, World!
             },
           },
         },
-      ],
-      domPurify: DOMPurify(window),
-      domPurifyOptions: {
+      ])
+      .setDOMPurifyConfig({
         ADD_ATTR: ['target'],
-      },
-    });
+      });
 
     const actual = converter.toHTML();
 
@@ -75,7 +75,9 @@ console.log('Hello, World!');
 `;
 
     const converter = new Converter(data, {
-      markedExtensions: [
+      domPurify: DOMPurify(window),
+    })
+      .setMarkedExtensions([
         {
           renderer: {
             link({ href, text }: { href: string; text: string }) {
@@ -92,9 +94,7 @@ console.log('Hello, World!');
             return highlight.highlight(code, options).value;
           },
         }),
-      ],
-      domPurify: DOMPurify(window),
-    });
+      ]);
 
     const actual = converter.toHTML();
 

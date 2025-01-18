@@ -5,7 +5,7 @@ interface ConverterOptions {
   marked?: Marked;
   markedExtensions?: MarkedExtension[];
   domPurify?: DOMPurify;
-  domPurifyOptions?: DOMPurifyConfig;
+  domPurifyConfig?: DOMPurifyConfig;
 }
 
 class Converter {
@@ -18,9 +18,19 @@ class Converter {
   constructor(data: string, options: ConverterOptions = {}) {
     this.data = data;
     this.marked = options.marked ?? new Marked();
-    this.marked.use(...(options.markedExtensions ?? []));
+    this.setMarkedExtensions(options.markedExtensions ?? []);
     this.domPurify = options.domPurify ?? createDOMPurify();
-    this.domPurify.setConfig(options.domPurifyOptions ?? {});
+    this.setDOMPurifyConfig(options.domPurifyConfig ?? {});
+  }
+
+  public setMarkedExtensions(extensions: MarkedExtension[]): this {
+    this.marked.use(...extensions);
+    return this;
+  }
+
+  public setDOMPurifyConfig(config: DOMPurifyConfig): this {
+    this.domPurify.setConfig(config);
+    return this;
   }
 
   /**
@@ -33,12 +43,12 @@ class Converter {
   /**
    * Converts the provided data into HTML format.
    */
-  public toHTML(): string {
+  public toHTML(domPurifyConfig: DOMPurifyConfig = {}): string {
     const html = this.marked
       .parse(this.data)
       .toString();
 
-    return this.domPurify.sanitize(html);
+    return this.domPurify.sanitize(html, domPurifyConfig);
   }
 }
 
