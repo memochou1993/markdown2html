@@ -17,8 +17,20 @@ export default defineConfig({
     copyPublicDir: false,
     lib: {
       entry: path.resolve(__dirname, 'lib/index.ts'),
-      name: 'MARKDOWN2HTML',
+      name: 'Markdown2HTML',
       fileName: format => format === 'es' ? 'index.js' : `index.${format}.js`,
+    },
+    rollupOptions: {
+      external: [
+        'dompurify',
+        'marked',
+      ],
+      output: {
+        globals: {
+          dompurify: 'dompurify',
+          marked: 'marked',
+        },
+      },
     },
   },
   resolve: {

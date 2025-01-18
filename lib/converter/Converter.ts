@@ -3,26 +3,22 @@ import { Marked, MarkedExtension } from 'marked';
 
 interface ConverterOptions {
   marked?: Marked;
-  markedExtensions?: Record<string, MarkedExtension>;
+  markedExtensions?: MarkedExtension[];
   domPurify?: DOMPurify;
   domPurifyOptions?: DOMPurifyConfig;
 }
 
 class Converter {
-  private markdown: string;
+  private data: string;
 
   private marked: Marked;
 
   private domPurify: DOMPurify;
 
-  constructor(markdown: string, options: ConverterOptions = {}) {
-    this.markdown = markdown;
-
+  constructor(data: string, options: ConverterOptions = {}) {
+    this.data = data;
     this.marked = options.marked ?? new Marked();
-    Object.entries(options.markedExtensions ?? {}).forEach(([key, value]) => {
-      this.marked.use({ [key]: value });
-    });
-
+    this.marked.use(...(options.markedExtensions ?? []));
     this.domPurify = options.domPurify ?? createDOMPurify();
     this.domPurify.setConfig(options.domPurifyOptions ?? {});
   }
@@ -39,7 +35,7 @@ class Converter {
    */
   public toHTML(): string {
     const html = this.marked
-      .parse(this.markdown)
+      .parse(this.data)
       .toString();
 
     return this.domPurify.sanitize(html);
