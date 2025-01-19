@@ -9,14 +9,14 @@ interface ConverterOptions {
 }
 
 class Converter {
-  private data: string;
+  private markdown: string;
 
   private marked: Marked;
 
   private domPurify: DOMPurify;
 
-  constructor(data: string, options: ConverterOptions = {}) {
-    this.data = data;
+  constructor(markdown: string, options: ConverterOptions = {}) {
+    this.markdown = markdown;
     this.marked = options.marked ?? new Marked();
     this.setMarkedExtensions(options.markedExtensions);
     this.domPurify = options.domPurify ?? createDOMPurify();
@@ -34,18 +34,18 @@ class Converter {
   }
 
   /**
-   * Converts the provided data into HTML code.
+   * Converts the provided Markdown content into HTML code.
    */
-  public static toHTML(data: string, options: ConverterOptions = {}): string {
-    return new Converter(data, options).toHTML();
+  public static toHTML(markdown: string, options: ConverterOptions = {}): string {
+    return new Converter(markdown, options).toHTML();
   }
 
   /**
-   * Converts the provided data into HTML code.
+   * Converts the provided Markdown content into HTML code.
    */
   public toHTML(domPurifyConfig: DOMPurifyConfig = {}): string {
     const html = this.marked
-      .parse(this.data)
+      .parse(this.markdown)
       .toString();
 
     return this.domPurify.sanitize(html, domPurifyConfig);
