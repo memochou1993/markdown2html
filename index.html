@@ -13,13 +13,7 @@
     <script src="https://unpkg.com/dompurify/dist/purify.min.js"></script>
     <script src="dist/index.umd.js"></script>
     <script>
-      const output = window.Markdown2HTML.Converter.toHTML('# Hello, World! \n<a href="/" target="_blank" onmouseover="alert(\'XSS Attack!\')">It works!</a>', {
-        domPurifyConfig: {
-          ADD_ATTR: [
-            'target',
-          ],
-        },
-      });
+      const output = window.Markdown2HTML.Converter.toHTML('# Hello, World!');
 
       console.log(output);
     </script>
