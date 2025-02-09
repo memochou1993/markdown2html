@@ -2,6 +2,10 @@
 
 A simple Markdown to HTML converter that transforms Markdown content into HTML code, which is sanitized to prevent XSS attacks.
 
+# Demo
+
+[JSON2Markdown Renderer](https://memochou1993.github.io/json2markdown-renderer/)
+
 ## Getting Started
 
 ### Using with ES Modules
